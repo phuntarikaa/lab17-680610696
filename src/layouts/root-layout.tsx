@@ -26,7 +26,7 @@ export default function RootLayout() {
           <Outlet />
         </main>
         <footer className="border-t p-4 text-center text-xs text-muted-foreground">
-          ชื่อ-นามสกุล และรหัสนักศึกษาของผู้จัดทำ — แก้เป็นของตัวเอง
+          Puntharika Khokanklang — 680610696
         </footer>
       </SidebarInset>
     </SidebarProvider>

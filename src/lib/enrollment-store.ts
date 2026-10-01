@@ -41,14 +41,14 @@ export const useEnrollmentStore = create<EnrollmentStore>()(
       addCourse: (course) =>
         set((state) => ({ courses: [...state.courses, course] })),
 
-      removeInstructorFromCourse: (courseId, instructor) =>
+      removeInstructorFromCourse: (courseId, email) =>
         set((state) => ({
           courses: state.courses.map((course) =>
             course.courseId === courseId
               ? {
                   ...course,
                   instructors: course.instructors.filter(
-                    (name) => name !== instructor,
+                    (name) => name.email.toLowerCase() !== email.toLowerCase(),
                   ),
                 }
               : course,
@@ -62,5 +62,12 @@ export const useEnrollmentStore = create<EnrollmentStore>()(
         })),
     }),
     // เก็บเฉพาะ students/courses ลง localStorage — enrollments ไม่ persist
+    {
+      name: "lab17-2569-680610663",
+      partialize: (state) => ({
+        students: state.students,
+        courses: state.courses,
+      })
+    }
   ),
 );

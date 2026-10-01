@@ -8,6 +8,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useEnrollmentStore } from "@/lib/enrollment-store";
+import { Badge } from "@/components/ui/badge";
 
 export function CourseTable() {
   const courses = useEnrollmentStore((s) => s.courses);
@@ -20,7 +21,11 @@ export function CourseTable() {
           <TableRow>
             <TableHead>รหัสวิชา</TableHead>
             <TableHead>ชื่อวิชา</TableHead>
+            <TableHead>หลักสูตร</TableHead>
+            <TableHead>ภาคการศึกษา</TableHead>
+            <TableHead>รายละเอียด</TableHead>
             <TableHead>ผู้สอน</TableHead>
+            <TableHead>รับข่าวสารทางอีเมล</TableHead>
             <TableHead className="w-20">Action</TableHead>
           </TableRow>
         </TableHeader>
@@ -39,13 +44,39 @@ export function CourseTable() {
             <TableRow key={course.courseId}>
               <TableCell>{course.courseId}</TableCell>
               <TableCell>{course.courseTitle}</TableCell>
-              <TableCell>
-                {/* แสดงรายชื่อผู้สอนเป็นข้อความธรรมดา คั่นด้วย ", " */}
-                {course.instructors.length === 0 ? (
-                  <span className="text-muted-foreground">ยังไม่มีผู้สอน</span>
-                ) : (
-                  course.instructors.join(", ")
-                )}
+              <TableCell>{course.program}</TableCell>
+              <TableCell>{course.semester === "1" ?
+              (
+                <span>ภาคการศึกษาที่ 1</span>
+              ) : (course.semester === "2" ? (
+                <span>ภาคการศึกษาที่ 2</span>
+              ) : (
+                <span>ภาคฤดูร้อน</span>
+              ))}
+              </TableCell>
+              <TableCell>{course.description?.length === 0 ? (
+                <span className="text-muted-foreground">—</span>
+              ) : (
+                course.description
+              )}
+              </TableCell>
+              <TableCell className="p-2 align-middle whitespace-nowrap">
+                  <div className="flex flex-col gap-1">
+                    {course.instructors.map((i) => (
+                    <div key={i.email} className="leading-tight">
+                      <div>{i.name}</div>
+                      <div className="text-xs text-muted-foreground">
+                        {i.email}
+                      </div>
+                    </div>
+                    ))}
+                  </div>
+              </TableCell>
+              <TableCell>{course.notifyByEmail === true ? (
+                <Badge variant="default">รับ</Badge>
+              ) : (
+                <Badge variant="secondary">ไม่รับ</Badge>
+              )}
               </TableCell>
               <TableCell>
                 <ConfirmDeleteButton
